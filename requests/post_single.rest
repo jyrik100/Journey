@@ -1,0 +1,14 @@
+POST http://localhost:3001/api/journeys
+Content-Type: application/json
+
+{
+    "departure": "2021-05-31T23:57:25",    
+    "return": "2021-06-01T00:05:46",    
+    "departureStation_ID": "094",    
+    "departureStation_Name": "Laajalahden Aukio",    
+    "returnStation_ID": "100",    
+    "returnStation_Name": "Teljäntie",    
+    "coveredDistance_Meters": 20243,    
+    "duration_Seconds": 520
+
+}
