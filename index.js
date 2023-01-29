@@ -4,44 +4,66 @@ app.use(express.json())
 const fs = require("fs");
 const cors = require('cors')
 app.use(cors())
+const moment = require('moment'); // used for date differencies conversion and calc
 
-// read the Journey XML file to an array and generate ID to each entry
+// This is the back-end api that 1) retrieves data from Excel file and 2) provides Api to get and manipulate that data
+
+// 1) INITIALISING DATA
+
+ // npm start -> read the Journey XML file: CSV_file.csv to an array of objects {title: value}
   csv = fs.readFileSync("CSV_file.csv")
   var array = csv.toString().split('\n');
   let result = [];
   var headers;
   headers = array[0].split(",");
 
-  var a = 1;
   for (var i = 1; i < array.length; i++) {
      var obj = {};
      if(array[i] == undefined || array[i].trim() == "") {
           continue;
       }
-      obj["id"] = a;
-      a++
       var words = array[i].split(",");
       for(var j = 0; j < words.length; j++) {
           obj[headers[j].trim()] = words[j];
       }
       result.push(obj);
   }
-  console.log(result);  // this data is available for frontEnd, I could store it in DB but dont want to share
-  let json = JSON.stringify(result);
-  fs.writeFileSync('output.json', json); // generate output json folder
+ // remove entries where durance is less than given seconds {title: value}
+ // difference is calculated using moment -library
+ 
+  var result1 = [];
+  var a = 1;    
 
-  
- // available APIs for Journerys, you can test tem on request methods when this is running
+  for (var i = 0, len = result.length; i<len; i++) {
+    const newStartDate= new Date (result[i].Departure)
+    const newEndDate= new Date (result[i].Return)
+    let difference = moment(newEndDate).diff(newStartDate,'seconds')
+ // generate running id for each valid object and provide the json to front end for listing
+    if(difference >1000){ 
+      result[i]["id"] = a;
+      result1.push(result[i]);  
+      a++
+    };
+
+   };
+  let json = JSON.stringify(result1);
+  // push the initial output list as cvs file also to src directory 
+  fs.writeFileSync('output.json', json); 
+
+
+// 2) PROVIDING APIs to FRONT END
+  // available APIs for Journerys -> all apis are not uptodate with latest changes
+  // you can test Apis on request methods when this application is running (npm start)
 
   app.get('/', (req, res) => {  // front page to check connection  WORKING
     res.send('<h1>API working, Welcome!</h1>')  
   })
 
   app.get('/api/journeys', (req, res) => { // get all items   WORKING
-      res.json(result)    
+      res.json(result1)    
   })
 
-  app.get('/api/journeys/:id', (request, response) => {  // get item by iD  WORKING
+  app.get('/api/journeys/:id', (request, response) => {  // get item by iD 
     const id = Number(request.params.id)
     const journey = result.find(result => result.id === id)
     console.log(id)
