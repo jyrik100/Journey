@@ -51,7 +51,7 @@ const moment = require('moment'); // used for date differencies conversion and c
   fs.writeFileSync('output.json', json); 
 
 
-// 2) PROVIDING APIs to FRONT END
+// 2) PROVIDING APIs to JOURNEY FRONT END
   // available APIs for Journerys -> all apis are not uptodate with latest changes
   // you can test Apis on request methods when this application is running (npm start)
 
