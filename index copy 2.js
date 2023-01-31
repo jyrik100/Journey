@@ -39,7 +39,7 @@ const moment = require('moment'); // used for date differencies conversion and c
     const newEndDate= new Date (result[i].Return)
     let difference = moment(newEndDate).diff(newStartDate,'seconds')
  // generate running id for each valid object and provide the json to front end for listing
-    if(difference >10){ 
+    if(difference >1000){ 
       result[i]["id"] = a;
       result1.push(result[i]);  
       a++
@@ -62,13 +62,7 @@ const moment = require('moment'); // used for date differencies conversion and c
   app.get('/api/journeys', (req, res) => { // get all items   WORKING
       res.json(result1)    
   })
-   app.get('/api/pagejourneys/:id/:size', (req, res) => { // paging based on pageNumber and pagesize
-    const page = Number(req.params.id)
-    const size = Number(req.params.size)
-    const index = (page*size)-size
-    const result2 = result1.slice(index,index+size)  // from 11 to 15 
-    res.json(result2)    
-  })
+
   app.get('/api/journeys/:id', (request, response) => {  // get item by iD 
     const id = Number(request.params.id)
     const journey = result.find(result => result.id === id)
