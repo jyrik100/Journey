@@ -10,16 +10,9 @@ const moment = require('moment'); // used for date differencies conversion and c
 
 // 1) INITIALISING DATA
 
- // npm start -> read the Journey XML files: CSV_file.csv to an array of objects {title: value}
-  csv = fs.readFileSync("CSV_file.csv")   
-  csv1 = fs.readFileSync("CSV_file1.csv") 
-  csv2 = fs.readFileSync("CSV_file2.csv") 
-  var array1 = csv.toString().split('\n')
-  var array2 = csv1.toString().split('\n')
-  var array3 = csv2.toString().split('\n')
-  var array = array1.concat(array2, array3)
-  console.log(array)
-
+ // npm start -> read the Journey XML file: CSV_file.csv to an array of objects {title: value}
+  csv = fs.readFileSync("CSV_file.csv")   // todo: readMultiplefiles in chunks to an array readStream
+  var array = csv.toString().split('\n');
   let result = [];
   var headers;
   headers = array[0].split(",");
@@ -30,7 +23,6 @@ const moment = require('moment'); // used for date differencies conversion and c
         continue;
       }
       var words = array[i].split(",");
-      console.log(words)
       if (words.length>8){  // if there are entries with too many particles skip and log
         console.log("skipped record" + words)
         continue
