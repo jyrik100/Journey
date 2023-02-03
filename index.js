@@ -6,11 +6,15 @@ const cors = require('cors')
 app.use(cors())
 const moment = require('moment'); // used for date differencies conversion and calc
 
-// This is the back-end api that 1) retrieves data from Excel file and 2) provides Api to get and manipulate that data
+// This is the back-end api that 1) retrieves data from Excel files and 2) provides Apis to get and manipulate that data
+// npm start
 
 // 1) INITIALISING DATA
+  // toDO: create a folder and read the files from that path
+  // toDO: massive amount of entries -> need streaming and chuncks?
+  // toDo: replace header spaces with: "_" when reading 
 
- // npm start -> read the Journey XML files: CSV_file.csv to an array of objects {title: value}
+ // read the Journey XML files: CSV_file.csv to an array of objects {title: value}
   csv = fs.readFileSync("CSV_file.csv")   
   csv1 = fs.readFileSync("CSV_file1.csv") 
   csv2 = fs.readFileSync("CSV_file2.csv") 
@@ -45,13 +49,15 @@ const moment = require('moment'); // used for date differencies conversion and c
   var result1 = [];
   var a = 1;    
 
- // Todo: remove entries where distance is less than 10m {title: value}
+ // only entries with sufficient time and distance are submitted
   for (var i = 0, len = result.length; i<len; i++) {
     const newStartDate= new Date (result[i].Departure)
     const newEndDate= new Date (result[i].Return)
     let difference = moment(newEndDate).diff(newStartDate,'seconds')
+    var distance = Number(result[i].Covered_distance_m)
+
  // generate running id for each valid object and provide the json to front end for listing
-    if(difference >10){ 
+    if(difference >10 && distance>10){ 
       result[i]["id"] = a;
       result1.push(result[i]);  
       a++
@@ -64,6 +70,10 @@ const moment = require('moment'); // used for date differencies conversion and c
 // 2) PROVIDING APIs to JOURNEY FRONT END
   // available APIs for Journerys -> all apis are not uptodate with latest changes
   // you can test Apis on request methods when this application is running (npm start)
+  // toDo: push the array to database and make the queries from DB
+  // toDO: return number of pages(even that pages do not have full size of entries) to front pagination
+  // toDO: fix rest of apis to new array 
+  // toDo: API for stationsList and Details and front pagination
 
   app.get('/', (req, res) => {  // front page to check connection  WORKING
     res.send('<h1>API working, Welcome!</h1>')  
