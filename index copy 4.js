@@ -18,13 +18,12 @@ const moment = require('moment'); // used for date differencies conversion and c
   csv = fs.readFileSync("CSV_file.csv")   
   csv1 = fs.readFileSync("CSV_file1.csv") 
   csv2 = fs.readFileSync("CSV_file2.csv") 
-  csv4 = fs.readFileSync("Stations.csv") 
   var array1 = csv.toString().split('\n')
   var array2 = csv1.toString().split('\n')
   var array3 = csv2.toString().split('\n')
   var array = array1.concat(array2, array3)
- // read the stations XML file into an array of objects
- 
+  console.log(array)
+
   let result = [];
   var headers;
   headers = array[0].split(",");
@@ -68,36 +67,6 @@ const moment = require('moment'); // used for date differencies conversion and c
   // push the initial output list as cvs file also to src directory 
   fs.writeFileSync('output.json', json); 
 
-// read stations data --------------------------------------------
-
-  var stationArray = csv4.toString().split('\n')
-  let resultStations = [];
-  var headersStations;
-  headersStations = stationArray[0].split(",");
-
-  for (var i = 1; i < stationArray.length; i++) {
-     var obj = {};
-     if(stationArray[i] == undefined || stationArray[i].trim() == "") {
-        continue;
-      }
-      var wordsStation = stationArray[i].split(",");
-      console.log(wordsStation)
-      console.log("test")
-
-      if (wordsStation.length>13){  // if there are entries with too many particles skip and log
-        console.log("skipped record" + wordsStation)
-        continue
-      }
-      for(var j = 0; j < words.length; j++) {
-        obj[headersStations[j].trim()] = wordsStation[j];
-      }
-      resultStations.push(obj);
-  }
- // difference is calculated using moment -library
- 
-  let jsonStations = JSON.stringify(resultStations);
-  console.log(jsonStations)
-
 // 2) PROVIDING APIs to JOURNEY FRONT END
   // available APIs for Journerys -> all apis are not uptodate with latest changes
   // you can test Apis on request methods when this application is running (npm start)
@@ -105,10 +74,6 @@ const moment = require('moment'); // used for date differencies conversion and c
   // toDO: return number of pages(even that pages do not have full size of entries) to front pagination
   // toDO: fix rest of apis to new array 
   // toDo: API for stationsList and Details and front pagination
-  // get stations
-  // get station by id -> show station
-  // get journeys where departure {id} 
-  // get journeys where return {id}
 
   app.get('/', (req, res) => {  // front page to check connection  WORKING
     res.send('<h1>API working, Welcome!</h1>')  
@@ -171,10 +136,6 @@ const moment = require('moment'); // used for date differencies conversion and c
     journeys = journeys.filter(journey => journey.id !== id)
     response.status(204).end()
   })
-
-  app.get('/api/stations', (req, res) => {
-    res.json(resultStations)    
-})
 
   const PORT = 3001
   
