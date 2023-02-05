@@ -6,15 +6,18 @@ const cors = require('cors')
 app.use(cors())
 const moment = require('moment'); // used for date differencies conversion and calc
 
-// This is the back-end api that 1) retrieves data from Excel files and 2) provides Apis to get and manipulate that data
-// npm start
+// Backend(npm start) 1) read data from excels to jsonArray 2) provide methods to frontEnd to use that data
 
-// 1) INITIALISING DATA
+// 1) Read data from excels
+  // toDo: StationsPagination
+  // toDo: Station Journeys listed
   // toDO: create a folder and read the files from that path
-  // toDO: massive amount of entries -> need streaming and chuncks?
+  // toDO: test with massive amount of entries -> need streaming and chuncks?
   // toDo: replace header spaces with: "_" when reading 
+  // toDo: stations >13 skips some records, analyse why
+  // toDo: fix other Journeys apis to work with latest data 
 
- // read the Journey XML files: CSV_file.csv to an array of objects {title: value}
+ // read the Journeys from xml files into one array
   csv = fs.readFileSync("CSV_file.csv")   
   csv1 = fs.readFileSync("CSV_file1.csv") 
   csv2 = fs.readFileSync("CSV_file2.csv") 
@@ -35,7 +38,7 @@ const moment = require('moment'); // used for date differencies conversion and c
         continue;
       }
       var words = array[i].split(",");
-      console.log(words)
+//      console.log(words)
       if (words.length>8){  // if there are entries with too many particles skip and log
         console.log("skipped record" + words)
         continue
@@ -68,12 +71,13 @@ const moment = require('moment'); // used for date differencies conversion and c
   // push the initial output list as cvs file also to src directory 
   fs.writeFileSync('output.json', json); 
 
-// read stations data --------------------------------------------
+ // read the Stations data from xml file into one array
 
   var stationArray = csv4.toString().split('\n')
   let resultStations = [];
   var headersStations;
   headersStations = stationArray[0].split(",");
+  
 
   for (var i = 1; i < stationArray.length; i++) {
      var obj = {};
@@ -81,22 +85,16 @@ const moment = require('moment'); // used for date differencies conversion and c
         continue;
       }
       var wordsStation = stationArray[i].split(",");
-      console.log(wordsStation)
-      console.log("test")
-
-      if (wordsStation.length>13){  // if there are entries with too many particles skip and log
+      if (wordsStation.length!=13){  // if there are entries with too many particles skip and log
         console.log("skipped record" + wordsStation)
         continue
       }
-      for(var j = 0; j < words.length; j++) {
+      for(var j = 0; j < wordsStation.length; j++) {
         obj[headersStations[j].trim()] = wordsStation[j];
       }
       resultStations.push(obj);
-  }
- // difference is calculated using moment -library
- 
+  } 
   let jsonStations = JSON.stringify(resultStations);
-  console.log(jsonStations)
 
 // 2) PROVIDING APIs to JOURNEY FRONT END
   // available APIs for Journerys -> all apis are not uptodate with latest changes
