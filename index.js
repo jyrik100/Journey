@@ -140,6 +140,16 @@ const moment = require('moment'); // used for date differencies conversion and c
     return maxId + 1
   }
   
+  app.get('/api/journeysstation/:id', (request, response) => {  // get journeycounts by stationID
+    const returnCount = result.filter(obj => obj.Return_station_id === request.params.id);
+    const departureCount = result.filter(obj => obj.Departure_station_id === request.params.id);
+    var counts ={
+    "returnCount": returnCount.length,
+    "departCount": departureCount.length, 
+    }
+    response.json(counts)
+ })
+  
 
   app.post('/api/journeys', (request, response) => {  // add new item
     const body = request.body  
