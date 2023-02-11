@@ -184,6 +184,16 @@ const moment = require('moment'); // used for date differencies conversion and c
     res.json(resultStations)    
 })
 
+
+app.get('/api/pagestations/:id/:size', (req, res) => { // paging based on pageNumber and pagesize
+  const page = Number(req.params.id)
+  const size = Number(req.params.size)
+  const index = (page*size)-size
+  const result2Stations = resultStations.slice(index,index+size)  // from 11 to 15 
+  res.json(result2Stations)    // return also number of pages : how many times the size goes to lenght fully
+})
+
+
   const PORT = 3001
   
   app.listen(PORT, () => {
