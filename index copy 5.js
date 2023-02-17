@@ -115,21 +115,13 @@ const moment = require('moment'); // used for date differencies conversion and c
   app.get('/api/journeys', (req, res) => { // get all items   WORKING
       res.json(result1)    
   })
-  app.get('/api/pagejourneyspages/:size', (req, res) => { 
-    const size = Number(req.params.size)
-    const pages = Math.ceil(result1.length / size)
-    res.json(pages)    // how many pages are there in array for the size
-  })
-
-  app.get('/api/pagejourneys/:id/:size', (req, res) => { // paging based on pageNumber and pagesize
+   app.get('/api/pagejourneys/:id/:size', (req, res) => { // paging based on pageNumber and pagesize
     const page = Number(req.params.id)
     const size = Number(req.params.size)
     const index = (page*size)-size
     const result2 = result1.slice(index,index+size)  // from 11 to 15 
     res.json(result2)    // return also number of pages : how many times the size goes to lenght fully
   })
-
-
   app.get('/api/journeys/:id', (request, response) => {  // get item by iD 
     const id = Number(request.params.id)
     const journey = result.find(result => result.id === id)
@@ -199,11 +191,6 @@ app.get('/api/pagestations/:id/:size', (req, res) => { // paging based on pageNu
   const index = (page*size)-size
   const result2Stations = resultStations.slice(index,index+size)  // from 11 to 15 
   res.json(result2Stations)    // return also number of pages : how many times the size goes to lenght fully
-})
-app.get('/api/pagestationsspages/:size', (req, res) => { 
-  const size = Number(req.params.size)
-  const pages = Math.ceil(resultStations.length / size)
-  res.json(pages)    // how many pages are there in array for the size
 })
 
 
