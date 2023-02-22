@@ -1,2 +1,2 @@
-GET http://localhost:3001/api/journeys/2s
+GET http://localhost:3001/api/journeys/2
 

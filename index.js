@@ -9,8 +9,6 @@ const moment = require('moment'); // used for date differencies conversion and c
 // Backend(npm start) 1) read data from excels to jsonArray 2) provide methods to frontEnd to use that data
 
 // 1) Read data from excels
-  // toDo: StationsPagination
-  // toDo: Station Journeys listed
   // toDO: create a folder and read the files from that path
   // toDO: test with massive amount of entries -> need streaming and chuncks?
   // toDo: replace header spaces with: "_" when reading 
@@ -108,17 +106,17 @@ const moment = require('moment'); // used for date differencies conversion and c
   // get journeys where departure {id} 
   // get journeys where return {id}
 
-  app.get('/', (req, res) => {  // front page to check connection  WORKING
+  app.get('/', (req, res) => {  
     res.send('<h1>API working, Welcome!</h1>')  
   })
 
-  app.get('/api/journeys', (req, res) => { // get all items   WORKING
+  app.get('/api/journeys', (req, res) => { 
       res.json(result1)    
   })
-  app.get('/api/pagejourneyspages/:size', (req, res) => { 
+  app.get('/api/pagejourneyspages/:size', (req, res) => { // how many pages for pagination
     const size = Number(req.params.size)
     const pages = Math.ceil(result1.length / size)
-    res.json(pages)    // how many pages are there in array for the size
+    res.json(pages)    
   })
 
   app.get('/api/pagejourneys/:id/:size', (req, res) => { // paging based on pageNumber and pagesize
@@ -142,8 +140,8 @@ const moment = require('moment'); // used for date differencies conversion and c
     }
   })
   const generateId = () => {
-    const maxId = journeys.length > 0
-      ? Math.max(...journeys.map(n => n.id))
+    const maxId = result1.length > 0
+      ? Math.max(...result1.map(n => n.id))
       : 0
     return maxId + 1
   }
@@ -159,7 +157,7 @@ const moment = require('moment'); // used for date differencies conversion and c
  })
   
 
-  app.post('/api/journeys', (request, response) => {  // add new item
+  app.post('/api/journeys', (request, response) => {  // add new journey
     const body = request.body  
     if (!body.departure) {
       return response.status(400).json({ 
@@ -167,24 +165,24 @@ const moment = require('moment'); // used for date differencies conversion and c
       })
     }
     const journey = { // get data from request
-      id: generateId(),    
-      departure: body.departure,
-      return: body.return,    
-      departureStation_ID: body.departureStation_ID,    
-      departureStation_Name: body.departureStation_Name,    
-      returnStation_ID: body.returnStation_ID,    
-      returnStation_Name: body.returnStation_Name,    
-      coveredDistance_Meters: body.coveredDistance_Meters,    
-      duration_Seconds: body.duration_Seconds
+      Departure: body.departure,
+      Return: body.return,    
+      Departure_station_id: body.departureStation_ID,    
+      Departure_station_name: body.departureStation_Name,    
+      Return_station_id: body.returnStation_ID,    
+      Return_station_name: body.returnStation_Name,    
+      Covered_distance_m: body.coveredDistance_Meters,    
+      Duration_sec: body.duration_Seconds,
+      id: generateId()    
     }
 
-    journeys = journeys.concat(journey)  
+    result1 = result1.concat(journey)  
     response.json(journey)
   })
 
-  app.delete('/api/journeys/:id', (request, response) => { // delete item by id
+  app.delete('/api/journeys/:id', (request, response) => { // delete journey by id
     const id = Number(request.params.id)
-    journeys = journeys.filter(journey => journey.id !== id)
+    result1 = result1.filter(journey => journey.id !== id)
     response.status(204).end()
   })
 
