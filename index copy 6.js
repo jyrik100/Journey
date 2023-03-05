@@ -15,24 +15,16 @@ const moment = require('moment'); // used for date differencies conversion and c
   // toDo: stations >13 skips some records, analyse why
   // toDo: fix other Journeys apis to work with latest data 
 
- // read the Journeys from xml files into one array 
-  csv = fs.readFileSync("CSV_file.csv").toString().split('\n')  
-  console.log(csv)
-
-  csv1 = fs.readFileSync("CSV_file1.csv").toString().split('\n') 
-  csv1.shift()
-  //csv1 = csv1.join('\n')  // poista eka rivi
-  console.log(csv1)
-
-  csv2 = fs.readFileSync("CSV_file2.csv").toString().split('\n')
-  csv2.shift(); // remove the the first element from array
-  //csv2 = csv2.join('\n')
-  console.log(csv2)
-
-  var array = csv.concat(csv1, csv2)
- // read the stations XML file into an array of objects
-  console.log(array)
+ // read the Journeys from xml files into one array
+  csv = fs.readFileSync("CSV_file.csv")   
+  csv1 = fs.readFileSync("CSV_file1.csv") 
+  csv2 = fs.readFileSync("CSV_file2.csv") 
   csv4 = fs.readFileSync("Stations.csv") 
+  var array1 = csv.toString().split('\n')
+  var array2 = csv1.toString().split('\n')
+  var array3 = csv2.toString().split('\n')
+  var array = array1.concat(array2, array3)
+ // read the stations XML file into an array of objects
  
   let result = [];
   var headers;

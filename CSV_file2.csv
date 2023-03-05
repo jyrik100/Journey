@@ -1,4 +1,5 @@
-﻿2021-07-31T23:59:59,2021-08-01T00:09:15,113,Pasilan asema,078,Messeniuksenkatu,1602,553
+﻿Departure,Return,Departure_station_id,Departure_station_name,Return_station_id,Return_station_name,Covered_distance_m,Duration_sec
+2021-07-31T23:59:59,2021-08-01T00:09:15,113,Pasilan asema,078,Messeniuksenkatu,1602,553
 2021-07-31T23:59:55,2021-08-01T00:08:45,135,Velodrominrinne,115,Venttiilikuja,1307,532
 2021-07-31T23:59:55,2021-08-01T00:03:24,258,Abraham Wetterin tie,260,Herttoniemi (M),820,205
 2021-07-31T23:59:47,2021-08-01T00:05:52,122,Lintulahdenkatu,016,Liisanpuistikko,1298,369
