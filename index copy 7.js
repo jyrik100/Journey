@@ -11,23 +11,41 @@ const moment = require('moment'); // used for date differencies conversion and c
 // 1) Read data from excels
   // toDO: create a folder and read the files from that path
   // toDO: test with massive amount of entries -> need streaming and chuncks?
+  // toDo: replace header spaces with: "_" when reading 
   // toDo: stations >13 skips some records, analyse why
- 
+  // toDo: fix other Journeys apis to work with latest data 
+
  // read the Journeys from xml files into one array 
-  // read first file
   const csv = fs.readFileSync("CSV_file.csv").toString().split('\n')  
-  // set first file header not having spaces
+//  console.log(csv)
+//  const x = "Departure,Return,Departure station id,Departure station name,Return station id,Return station name,Covered distance (m),Duration (sec.)"
+//  const x1 = x.replace(/\s+/g,"_").replaceAll(".","").replaceAll("(","").replaceAll(")","");
   csv[0] = "Departure,Return,Departure_station_id,Departure_station_name,Return_station_id,Return_station_name,Covered_distance_m,Duration_sec"
-  // read second file
+  console.log(csv[0])
+  console.log(csv[1])
+
+/*   const x1 = x.replace(/\s+/g,"_");
+  const x2 = x1.replaceAll(".","");
+  const x3 = x2.replaceAll("(","");
+  const x4 = x3.replaceAll(")","");
+ */
+ // console.log("header")
+ // console.log(csv[0])
+
   const csv1 = fs.readFileSync("CSV_file1.csv").toString().split('\n') 
-  // remove header
   csv1.shift()
+  //csv1 = csv1.join('\n')  // poista eka rivi
+//  console.log(csv1)
+
   const csv2 = fs.readFileSync("CSV_file2.csv").toString().split('\n')
   csv2.shift(); // remove the the first element from array
+  //csv2 = csv2.join('\n')
+//  console.log(csv2)
+
   var array = csv.concat(csv1, csv2)
  // read the stations XML file into an array of objects
   console.log(array)
-  const csv4 = fs.readFileSync("Stations.csv") 
+  csv4 = fs.readFileSync("Stations.csv") 
  
   let result = [];
   var headers;
