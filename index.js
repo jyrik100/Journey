@@ -144,10 +144,10 @@ const moment = require('moment'); // used for date differencies conversion and c
     }
   })
   const generateId = () => {
-    const maxId = result1.length > 0
-      ? Math.max(...result1.map(n => n.id))
-      : 0
-    return maxId + 1
+//    const maxId = result1.length > s0 // avoid stack overflow
+//      ? Math.max(...result1.map(n => n.id))
+//      : 0
+    return result1.length+1//maxId + 1
   }
   
   app.get('/api/journeysstation/:id', (request, response) => {  // get journeycounts by stationID
